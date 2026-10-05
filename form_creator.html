@@ -73,7 +73,7 @@
 
         <h2>School Information</h2>
 
-        <form id="myForm">
+        <form action="https://formspree.io/f/xrpegggy" method="POST" id="myForm">
 
             <label>1. Your school name</label>
             <input type="text" name="school" required>
@@ -111,7 +111,6 @@
 
     </div>
 
-
     <div class="card" id="responseArea" style="display:none;">
 
         <h2>📊 Responses</h2>
@@ -126,36 +125,7 @@
 
 </div>
 
-
 <script>
-
-document.getElementById("myForm").addEventListener("submit", function(event) {
-
-    event.preventDefault();
-
-    let formData = new FormData(this);
-
-    let response = {};
-
-    formData.forEach(function(value, key) {
-        response[key] = value;
-    });
-
-    let savedResponses =
-        JSON.parse(localStorage.getItem("formResponses")) || [];
-
-    savedResponses.push(response);
-
-    localStorage.setItem(
-        "formResponses",
-        JSON.stringify(savedResponses)
-    );
-
-    alert("✅ Form submitted and saved!");
-
-    this.reset();
-});
-
 
 function showResponses() {
 
@@ -206,7 +176,6 @@ function showResponses() {
         `;
     });
 }
-
 
 function clearResponses() {
 
