@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Form Creator</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f2f2f2;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin: 15px 0;
+            border-radius: 12px;
+        }
+
+        input {
+            width: 95%;
+            padding: 12px;
+            margin: 8px 0 20px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 12px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .submit {
+            background: #34a853;
+            color: white;
+        }
+
+        .responses {
+            background: #4285f4;
+            color: white;
+        }
+
+        .clear {
+            background: #ea4335;
+            color: white;
+        }
+
+        .response {
+            background: #f7f7f7;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>📝 My Form Creator</h1>
+
+        <h2>School Information</h2>
+
+        <form id="myForm">
+
+            <label>1. Your school name</label>
+            <input type="text" name="school" required>
+
+            <label>2. Your class</label>
+            <input type="text" name="class" required>
+
+            <label>3. Your section</label>
+            <input type="text" name="section" required>
+
+            <label>4. Your school floor</label>
+            <input type="text" name="floor" required>
+
+            <label>5. Your name</label>
+            <input type="text" name="name" required>
+
+            <label>6. Your age</label>
+            <input type="number" name="age" required>
+
+            <label>7. Your phone number</label>
+            <input type="tel" name="phone" placeholder="Use a test number while testing" required>
+
+            <label>8. You're good to go? Type OK to submit</label>
+            <input type="text" name="confirmation" required>
+
+            <button class="submit" type="submit">
+                Submit
+            </button>
+
+        </form>
+
+        <button class="responses" onclick="showResponses()">
+            📊 Responses
+        </button>
+
+    </div>
+
+
+    <div class="card" id="responseArea" style="display:none;">
+
+        <h2>📊 Responses</h2>
+
+        <div id="responses"></div>
+
+        <button class="clear" onclick="clearResponses()">
+            🗑 Clear Responses
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+document.getElementById("myForm").addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    let formData = new FormData(this);
+
+    let response = {};
+
+    formData.forEach(function(value, key) {
+        response[key] = value;
+    });
+
+    let savedResponses =
+        JSON.parse(localStorage.getItem("formResponses")) || [];
+
+    savedResponses.push(response);
+
+    localStorage.setItem(
+        "formResponses",
+        JSON.stringify(savedResponses)
+    );
+
+    alert("✅ Form submitted and saved!");
+
+    this.reset();
+});
+
+
+function showResponses() {
+
+    let area = document.getElementById("responseArea");
+
+    area.style.display = "block";
+
+    let responses =
+        JSON.parse(localStorage.getItem("formResponses")) || [];
+
+    let output = document.getElementById("responses");
+
+    output.innerHTML = "";
+
+    if (responses.length === 0) {
+
+        output.innerHTML = "<p>No responses yet.</p>";
+
+        return;
+    }
+
+    responses.forEach(function(response, index) {
+
+        output.innerHTML += `
+
+            <div class="response">
+
+                <h3>Response ${index + 1}</h3>
+
+                <p><b>School:</b> ${response.school}</p>
+
+                <p><b>Class:</b> ${response.class}</p>
+
+                <p><b>Section:</b> ${response.section}</p>
+
+                <p><b>Floor:</b> ${response.floor}</p>
+
+                <p><b>Name:</b> ${response.name}</p>
+
+                <p><b>Age:</b> ${response.age}</p>
+
+                <p><b>Phone:</b> ${response.phone}</p>
+
+                <p><b>Confirmation:</b> ${response.confirmation}</p>
+
+            </div>
+
+        `;
+    });
+}
+
+
+function clearResponses() {
+
+    if (confirm("Delete all saved responses?")) {
+
+        localStorage.removeItem("formResponses");
+
+        showResponses();
+    }
+}
+
+</script>
+
+</body>
+</html>
